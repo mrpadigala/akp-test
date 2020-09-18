@@ -1,0 +1,13 @@
+{
+  "ExclusiveStartKey": null,
+  "ExpressionAttributeNames": {
+    "#AttributeId": "AttributeId"
+  },
+  "ExpressionAttributeValues": {
+    ":AttributeId": "MENA#Held"
+  },
+  "IndexName": "IndexAttributeId",
+  "KeyConditionExpression": "#AttributeId = :AttributeId",
+  "Limit": 50,
+  "TableName": "OrdersV3"
+}

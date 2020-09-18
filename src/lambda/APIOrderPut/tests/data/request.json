@@ -1,0 +1,94 @@
+{
+  "CustomerUuid": "customerUuid-test",
+  "EstimatedDeliveryDate": "2019-03-05",
+  "CurrencyCode": "GBP",
+  "StoreId": "1",
+  "DiscountCode": "Test",
+  "DiscountCouponDescription": "Test 50%",
+  "BillingDetails": {
+    "Address": {
+      "City": "KIDDERMINSTER",
+      "CountryCode": "GB",
+      "Postcode": "DY10 1SA",
+      "Region": "Region",
+      "Street": "17 Offmore Road"
+    },
+    "FirstName": "TestFirst",
+    "LastName": "TestLast"
+  },
+  "CustomerDetails": {
+    "CustomerId": "1",
+    "Email": "test@mail.com",
+    "FirstName": "TestFirst",
+    "LastName": "TestLast",
+    "Phone": "+44 54"
+  },
+  "Items": [
+    {
+      "Name": "Idda Dove Grey Dress",
+      "ProductType": "configurable",
+      "Quantity": 1,
+      "Size": null,
+      "OriginalPrice": 18.00,
+      "Price": 15.00,
+      "Sku": "CLS3875/100/67",
+      "Image": "image.jpeg"
+    },
+    {
+      "BaseDiscount": 23.00,
+      "BaseOriginalPrice": 20.00,
+      "BasePrice":  17.00,
+      "BaseTaxAmount":6,
+      "Discount": 21.60,
+      "Image": "image.jpeg",
+      "Name": "Idda Dove Grey Long Sleeve Wrap Skirt Bodycon Dress",
+      "OriginalPrice": 18.00,
+      "Price": 15.00,
+      "SelectedValues": [{
+        "label": "Size",
+        "value": "22"
+      },
+      {
+        "label": "Colour",
+        "value": "Grey"
+      }],
+      "ProductType": "simple",
+      "Quantity": 3,
+      "Size": "6",
+      "Sku": "CLS3875/100/68",
+      "TaxAmount": 5.40,
+      "TaxPercent": 20
+    },
+    {
+      "Image": "image.jpeg",
+      "Name": "Idda Dove Black Long Sleeve Wrap Skirt Bodycon Dress",
+      "OriginalPrice": 15.00,
+      "Price": 12.00,
+      "SelectedValues": [{
+        "label": "Size",
+        "value": "21"
+      }],
+      "ProductType": "simple",
+      "Quantity": 3,
+      "Size": "6",
+      "Sku": "CLS3875/100/69",
+      "TaxAmount": 4.40,
+      "TaxPercent": 20
+    }
+  ],
+  "ShippingDetails": {
+    "Address": {
+      "City": "KIDDERMINSTER",
+      "CountryCode": "GB",
+      "Postcode": "DY10 1SA",
+      "Region": "Region",
+      "Street": "17 Offmore Road"
+    },
+    "FirstName": "TestFirst",
+    "LastName": "TestLast",
+    "BasePrice": 6.22,
+    "Price": 5.66,
+    "Method": "flatrate5_flatrate5",
+    "Type": "UK Saver Delivery - UK Saver Delivery"
+  }
+}

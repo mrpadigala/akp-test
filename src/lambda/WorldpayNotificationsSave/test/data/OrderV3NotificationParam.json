@@ -1,0 +1,10 @@
+{
+  "Item": {
+    "AttributeId": "Notification#Worldpay#1602374400000",
+    "OrderId": "12312-123-123213-213",
+    "RawMessage": "<!DOCTYPE paymentService PUBLIC \"-//Worldpay//DTD Worldpay PaymentService v1//EN\"\n        \"http://dtd.worldpay.com/paymentService_v1.dtd\">\n<paymentService version=\"1.4\" merchantCode=\"Your_merchant_code\">\n    <notify>\n        <orderStatusEvent orderCode=\"12312-123-123213-213\"> <!--The orderCode you supplied in the order-->\n            <payment>\n                <paymentMethod>ECMC-SSL</paymentMethod>\n                <amount value=\"2400\" currencyCode=\"EUR\" exponent=\"2\" debitCreditIndicator=\"credit\"/>\n                <lastEvent>AUTHORISED</lastEvent>\n                <AuthorisationId id=\"622206\"/>\n                <balance accountType=\"IN_PROCESS_AUTHORISED\">\n                    <amount value=\"2400\" currencyCode=\"EUR\" exponent=\"2\" debitCreditIndicator=\"credit\"/>\n                </balance>\n                <cardNumber>5255********2490</cardNumber>\n                <riskScore value=\"0\"/>\n            </payment>\n        </orderStatusEvent>\n    </notify>\n</paymentService>\n",
+    "Status": "AUTHORISED",
+    "Timestamp": 1602374400000
+  },
+  "TableName": "OrdersV3"
+}

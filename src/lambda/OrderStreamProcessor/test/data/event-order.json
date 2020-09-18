@@ -1,0 +1,183 @@
+{
+  "Records": [
+    {
+      "eventSourceARN": "arn:aws:dynamodb:eu-west-1:undefined:OrdersV3",
+      "awsRegion": "ddblocal",
+      "eventID": "557de5f7-2e63-4e8e-875b-9f133e435f52",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "dynamodb": {
+        "ApproximateCreationDateTime": "2020-08-14T07:23:00.000Z",
+        "Keys": { "AttributeId": { "S": "Details" }, "OrderId": { "S": "119-0679668-42454771" } },
+        "NewImage": {
+          "IndexCustomerId": { "S": "0" },
+          "IndexPostcodeLastName": { "S": "m12ffpuk" },
+          "OrderTotalDetails": {
+            "M": {
+              "Discount": { "S": "0.0000" },
+              "Subtotal": { "S": "2.2400" },
+              "Paid": { "S": "2.2400" },
+              "Shipping": { "S": "0.0000" },
+              "OriginalShipping": { "N": "0" }
+            }
+          },
+          "AttributeId": { "S": "Details/slash/test" },
+          "DiscountCouponDescription": { "NULL": true },
+          "CustomerDetails": {
+            "M": {
+              "Type": { "S": "Guest" },
+              "Email": { "S": "oms.test@prettylittlething.com" },
+              "FirstName": { "S": "Eric" },
+              "Phone": { "S": "1233445677" },
+              "CustomerId": { "S": "0" },
+              "LastName": { "S": "Puk" },
+              "GroupId": { "S": "0" }
+            }
+          },
+          "CurrencyCode": { "S": "GBP" },
+          "OrderStatus": { "S": "processing" },
+          "TaxAmount": { "S": "0.0000" },
+          "StoreId": { "S": "1" },
+          "IndexOrderCreateDate": { "S": "2019-06-13" },
+          "IndexEmail": { "S": "oms.test@prettylittlething.com" },
+          "StoreName": { "S": "prettylittlething.com" },
+          "OrderLines": {
+            "L": [
+              {
+                "M": {
+                  "BasePrice": { "S": "3.3500" },
+                  "RowTotalActual": { "N": "1.34" },
+                  "SelectedValues": { "L": [] },
+                  "Discount": { "S": "0.0000" },
+                  "OriginalPrice": { "S": "0.1675" },
+                  "BaseDiscount": { "S": "0.0000" },
+                  "Size": { "NULL": true },
+                  "ProductType": { "S": "simple" },
+                  "Quantity": { "S": "8.0000" },
+                  "BaseTaxAmount": { "S": "0.0000" },
+                  "Image": { "NULL": true },
+                  "Name": { "S": "Tan Fedora Hat - One Size" },
+                  "TaxPercent": { "S": "0.0000" },
+                  "RowTotalInclTax": { "S": "1.3400" },
+                  "BaseRowTotal": { "S": "26.8000" },
+                  "BaseRowTotalInclTax": { "S": "1.3400" },
+                  "RowTotal": { "S": "26.8000" },
+                  "TaxAmount": { "S": "0.0000" },
+                  "allocate": { "N": "0" },
+                  "Price": { "S": "3.3500" },
+                  "BaseOriginalPrice": { "S": "0.1675" },
+                  "Sku": { "S": "CLV8502/39/48" }
+                }
+              },
+              {
+                "M": {
+                  "BasePrice": { "S": "3.0000" },
+                  "RowTotalActual": { "N": "0.7500000000000001" },
+                  "SelectedValues": { "L": [] },
+                  "Discount": { "S": "0.0000" },
+                  "OriginalPrice": { "S": "0.1500" },
+                  "BaseDiscount": { "S": "0.0000" },
+                  "Size": { "NULL": true },
+                  "ProductType": { "S": "simple" },
+                  "Quantity": { "S": "5.0000" },
+                  "BaseTaxAmount": { "S": "0.0000" },
+                  "Image": { "NULL": true },
+                  "Name": { "S": "Basic Black Bodysuit - 4" },
+                  "TaxPercent": { "S": "0.0000" },
+                  "RowTotalInclTax": { "S": "0.7500" },
+                  "BaseRowTotal": { "S": "15.0000" },
+                  "BaseRowTotalInclTax": { "S": "0.7500" },
+                  "RowTotal": { "S": "15.0000" },
+                  "TaxAmount": { "S": "0.0000" },
+                  "allocate": { "N": "0" },
+                  "Price": { "S": "3.0000" },
+                  "BaseOriginalPrice": { "S": "0.1500" },
+                  "Sku": { "S": "CLP6023-4" }
+                }
+              },
+              {
+                "M": {
+                  "BasePrice": { "S": "3.0000" },
+                  "RowTotalActual": { "N": "0.15000000000000002" },
+                  "SelectedValues": { "L": [] },
+                  "Discount": { "S": "0.0000" },
+                  "OriginalPrice": { "S": "0.1500" },
+                  "BaseDiscount": { "S": "0.0000" },
+                  "Size": { "NULL": true },
+                  "ProductType": { "S": "simple" },
+                  "Quantity": { "S": "1.0000" },
+                  "BaseTaxAmount": { "S": "0.0000" },
+                  "Image": { "NULL": true },
+                  "Name": { "S": "Basic Black Bodysuit - 6" },
+                  "TaxPercent": { "S": "0.0000" },
+                  "RowTotalInclTax": { "S": "0.1500" },
+                  "BaseRowTotal": { "S": "3.0000" },
+                  "BaseRowTotalInclTax": { "S": "0.1500" },
+                  "RowTotal": { "S": "3.0000" },
+                  "TaxAmount": { "S": "0.0000" },
+                  "allocate": { "N": "0" },
+                  "Price": { "S": "3.0000" },
+                  "BaseOriginalPrice": { "S": "0.1500" },
+                  "Sku": { "S": "CLP6023-6" }
+                }
+              }
+            ]
+          },
+          "ShippingDetails": {
+            "M": {
+              "BasePrice": { "S": "0.0000" },
+              "Type": { "S": "UK Saver Delivery" },
+              "Address": {
+                "M": {
+                  "Region": { "S": "Greater Manchester" },
+                  "Street": { "S": "4 Tariff Street" },
+                  "City": { "S": "Manchester" },
+                  "CountryCode": { "S": "GB" },
+                  "Postcode": { "S": "M1 2FF" }
+                }
+              },
+              "Price": { "S": "0.0000" },
+              "FirstName": { "S": "Eric" },
+              "LastName": { "S": "Puk" },
+              "Method": { "S": "flatrate5_flatrate5" },
+              "DiscountAmount": { "S": "0.0000" }
+            }
+          },
+          "AgentData": { "NULL": true },
+          "DiscountCode": { "NULL": true },
+          "EstimatedDeliveryDate": { "S": "2019-06-26" },
+          "OrderId": { "S": "119-0679668-42454771" },
+          "BillingDetails": {
+            "M": {
+              "Address": {
+                "M": {
+                  "Region": { "S": "Greater Manchester" },
+                  "Street": { "S": "4 Tariff Street" },
+                  "City": { "S": "Manchester" },
+                  "CountryCode": { "S": "GB" },
+                  "Postcode": { "S": "M1 2FF" }
+                }
+              },
+              "FirstName": { "S": "Eric" },
+              "LastName": { "S": "Puk" }
+            }
+          },
+          "OrderDate": { "S": "2019-06-13 16:43:20" },
+          "DeviceType": { "NULL": true },
+          "IndexOrderNumber": { "S": "119-0679668-4245472" },
+          "OrderNumber": { "S": "119-0679668-4245472" },
+          "OrderCreateTime": { "N": "1560444200" },
+          "RequestedDeliveryDate": { "NULL": true },
+          "PaymentDetails": { "M": {} },
+          "Domain": { "S": "prettylittlething.com" },
+          "OrderSource": { "S": "Influencer" },
+          "OrderTotal": { "S": "2.2400" }
+        },
+        "SequenceNumber": "000000000000000000008",
+        "SizeBytes": 2352,
+        "StreamViewType": "NEW_IMAGE"
+      }
+    }
+  ]
+}

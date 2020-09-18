@@ -1,0 +1,19 @@
+{
+  "orderId": "testData",
+  "action": "confirmation",
+  "region": "testData",
+  "country": "testData",
+  "buildingName": "testData",
+  "streetName": "testData",
+  "city": "testData",
+  "districtName": "testData",
+  "longitude": "testData",
+  "latitude": "testData",
+  "addressDetail": "testData",
+  "nearestLandmark": "testData",
+  "postcode": "testData",
+  "passportId": "testData",
+  "phone": "testData",
+  "alternatePhone": "testData",
+  "username": "test username"
+}

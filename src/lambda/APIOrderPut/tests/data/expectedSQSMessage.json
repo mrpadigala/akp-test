@@ -1,0 +1,151 @@
+{
+  "CustomerUuid": "customerUuid-test",
+  "DeviceType": null,
+  "AgentData": null,
+  "Domain": "prettylittlething.com",
+  "EstimatedDeliveryDate":"2019-03-05",
+  "IndexPostcodeLastName": "dy101satestlast",
+  "DiscountCode":"Test",
+  "DiscountCouponDescription":"Test 50%",
+  "CurrencyCode": "GBP",
+  "OrderSource": "API Order",
+  "RequestedDeliveryDate" : null,
+  "StoreId": "1",
+  "OrderStatus": "processing",
+  "StoreName": "prettylittlething.com",
+  "OrderTotal": "101.0600",
+  "TaxAmount": "9.8000",
+  "CustomerDetails":{
+    "CustomerId":"1",
+    "Email":"test@mail.com",
+    "FirstName":"TestFirst",
+    "LastName":"TestLast",
+    "Phone":"+44 54",
+    "Type":"Registered",
+    "GroupId": "0"
+  },
+  "BillingDetails":{
+    "Address":{
+      "City":"KIDDERMINSTER",
+      "CountryCode":"GB",
+      "Postcode":"DY10 1SA",
+      "Region":"Region",
+      "Street":"17 Offmore Road"
+    },
+    "FirstName":"TestFirst",
+    "LastName":"TestLast"
+  },
+  "Items":[
+    {
+      "BaseDiscount": "0.0000",
+      "BaseOriginalPrice": "18.0000",
+      "BasePrice":  "15.0000",
+      "BaseRowTotal":  "15.0000",
+      "BaseRowTotalInclTax":  "18.0000",
+      "BaseTaxAmount":"0.0000",
+      "Discount":"0.0000",
+      "Image": "image.jpeg",
+      "Name":"Idda Dove Grey Dress",
+      "OriginalPrice":"18.0000",
+      "Price":"15.0000",
+      "ProductOptions":"{}",
+      "SelectedValues": [],
+      "ProductType":"configurable",
+      "Quantity":"1.0000",
+      "RowTotal":"15.0000",
+      "RowTotalActual":18,
+      "RowTotalInclTax":"18.0000",
+      "RowTotalActualInclTax": 18,
+      "Size":null,
+      "Sku":"CLS3875/100/67",
+      "TaxAmount":"0.0000",
+      "TaxPercent":"0.0000"
+    },
+    {
+      "BaseDiscount": "23.0000",
+      "BaseOriginalPrice": "20.0000",
+      "BasePrice":  "17.0000",
+      "BaseRowTotal":  "51.0000",
+      "BaseRowTotalInclTax":  "60.0000",
+      "BaseTaxAmount":"6.0000",
+      "Discount":"21.6000",
+      "Image": "image.jpeg",
+      "Name":"Idda Dove Grey Long Sleeve Wrap Skirt Bodycon Dress",
+      "OriginalPrice":"18.0000",
+      "Price":"15.0000",
+      "ProductOptions": "{\"attributes_info\":[{\"label\":\"Size\",\"value\":\"22\"},{\"label\":\"Colour\",\"value\":\"Grey\"}]}",
+      "SelectedValues":  [{
+        "label": "Size",
+        "value": "22"
+      },
+      {
+       "label": "Colour",
+       "value": "Grey"
+      }
+    ],
+      "ProductType":"simple",
+      "Quantity":"3.0000",
+      "RowTotal":"45.0000",
+      "RowTotalActual":32.4,
+      "RowTotalActualInclTax": 32.4,
+      "RowTotalInclTax":"54.0000",
+      "Size":"6",
+      "Sku":"CLS3875/100/68",
+      "TaxAmount":"5.4000",
+      "TaxPercent":"20.0000"
+    },
+    {
+      "BaseDiscount": "0.0000",
+      "BaseOriginalPrice": "15.0000",
+      "BasePrice":  "12.0000",
+      "BaseRowTotal":  "36.0000",
+      "BaseRowTotalInclTax":  "45.0000",
+      "BaseTaxAmount":"4.4000",
+      "Discount":"0.0000",
+      "Image": "image.jpeg",
+      "Name":"Idda Dove Black Long Sleeve Wrap Skirt Bodycon Dress",
+      "OriginalPrice":"15.0000",
+      "Price":"12.0000",
+      "ProductOptions":"{\"attributes_info\":[{\"label\":\"Size\",\"value\":\"21\"}]}",
+      "SelectedValues":  [{
+        "label": "Size",
+        "value": "21"
+      }
+    ],
+      "ProductType":"simple",
+      "Quantity":"3.0000",
+      "RowTotal":"36.0000",
+      "RowTotalActual":45,
+      "RowTotalActualInclTax": 45,
+      "RowTotalInclTax":"45.0000",
+      "Size":"6",
+      "Sku":"CLS3875/100/69",
+      "TaxAmount":"4.4000",
+      "TaxPercent":"20.0000"
+    }
+  ],
+  "ShippingDetails":{
+    "Address":{
+      "City":"KIDDERMINSTER",
+      "CountryCode":"GB",
+      "Postcode":"DY10 1SA",
+      "Region":"Region",
+      "Street":"17 Offmore Road"
+    },
+    "FirstName":"TestFirst",
+    "LastName":"TestLast",
+    "BasePrice": "6.2200",
+    "Price":"5.6600",
+    "DiscountAmount": "0.0000",
+    "Method":"flatrate5_flatrate5",
+    "Type":"UK Saver Delivery - UK Saver Delivery"
+  },
+  "OrderTotalDetails": {
+    "Discount": "21.6000",
+    "OriginalShipping": 5.66,
+    "Shipping": "5.6600",
+    "Paid": "101.0600",
+    "Subtotal": "85.6000"
+  },
+  "PaymentDetails": {}
+}

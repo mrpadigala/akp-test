@@ -1,0 +1,191 @@
+service: oms-order-processor
+
+plugins:
+  - serverless-dynamodb-local
+#  - serverless-offline-dynamodb-streams
+  - serverless-offline
+  - serverless-s3-local
+  - serverless-offline-sns
+  - serverless-offline-sqs
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-west-1
+  environment:
+    DYNAMODB_PORT: 4569
+    AWS_REGION: ${self:provider.region}
+    LOCALSTACK_HOST: localhost,
+    NODE_ENV: development
+    DYNAMODB_ENDPOINT: http://localhost:4569
+    S3_ENDPOINT: http://localhost:8008
+    SNS_ENDPOINT: http://localhost:4002
+    SQS_ENDPOINT: http://localhost:9324
+
+functions:
+  MenaHeldOrders:
+    handler: dist/MenaHeldOrders/index.handler
+    timeout: 20
+    events:
+      - http:
+          path: /mena/held-orders
+          method: get
+    environment:
+      SLS_DEBUG: "*"
+
+  MenaHeldOrderUpdate:
+    handler: dist/MenaHeldOrderUpdate/index.handler
+    timeout: 20
+    events:
+      - http:
+          path: /mena/held-order-update
+          method: post
+    environment:
+      SNS_TOPIC_WMS_CREATE_ORDER: "arn:aws:sns:OMS-OrderCreate-WMS"
+      SNS_TOPIC_SAGE: "arn:aws:sns:OMS-OrderUpdates"
+      EMAIL_TEMPLATE_ID: 9856
+      SQS_EMAIL_QUEUE_URL: "http://localhost:9324/queue/ScheduledEmailEmarsys"
+
+  CashOnDeliveryNotifier:
+    handler: dist/CashOnDeliveryNotifier/index.handler
+    s3hook:
+      handler: dist/CashOnDeliveryNotifier/ftpPuller.handler
+      events:
+        - s3: cash-on-delivery
+          event: s3:*
+    environment:
+      ASENDIA_FTP_HOST: 'ftp2.wnconsign.com'
+      ASENDIA_FTP_USER: 'CODPrettyLittleThings'
+      ASENDIA_FTP_PATH: '/CODPrettyLittleThings/COD Report'
+      ASENDIA_FTP_PASSWORD_SSM_PARAM_NAME: '/oms/asendia/ftp_password'
+      ASENDIA_FTP_SECURE_CONNECTION: 'false'
+      ASENDIA_S3_SYNC_BUCKET: cash-on-delivery
+      ASENDIA_S3_SYNC_PATH: 'asendia/import/'
+      CUSTOMER_INFORMATION_API_ENDPOINT: 'https://26siahewo8.execute-api.eu-west-1.amazonaws.com/staging/v1'
+      CUSTOMER_INFORMATION_API_KEY_SSM_PARAM_NAME: '/oms/integrations/ccs-api-key'
+      LOCAL_SSM_[/oms/integrations/ccs-api-key]: 'pPPHDpYmwN9KsRcHnhcd7VxdlTyeks6UkaHl7p10'
+
+  OrderStreamProcessor:
+    handler: dist/OrderStreamProcessor/index.handler
+    events:
+      - stream:
+          enabled: true
+          type: dynamodb
+          tableName: OrdersV3
+    environment:
+      S3_PATH_TO_ORDERS: 'orders'
+      S3_BUCKET_ORDER_STREAM_PROCESSOR: 'local-bucket'
+
+  UploadFileToS3OnlyForDevMode:
+    handler: serverless/s3Uploader.webhook
+    events:
+      - http:
+          method: GET
+          path: /upload-file-to-s3
+
+resources:
+  Resources:
+    S3bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: local-bucket
+
+    OrdersV3Table:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: OrderId
+            AttributeType: S
+          - AttributeName: AttributeId
+            AttributeType: S
+          - AttributeName: CreatedTimestamp
+            AttributeType: N
+        KeySchema:
+          - AttributeName: OrderId
+            KeyType: HASH
+          - AttributeName: AttributeId
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: IndexAttributeId
+            KeySchema:
+              - AttributeName: AttributeId
+                KeyType: HASH
+              - AttributeName: CreatedTimestamp
+                KeyType: RANGE
+            Projection:
+              ProjectionType: KEYS_ONLY
+        TimeToLiveSpecification:
+          - AttributeName: ttl
+            Enabled: false
+        TableName: OrdersV3
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+
+    ReportsTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: EntityId
+            AttributeType: S
+          - AttributeName: EntityType
+            AttributeType: S
+        KeySchema:
+          - AttributeName: EntityId
+            KeyType: HASH
+          - AttributeName: EntityType
+            KeyType: RANGE
+        TimeToLiveSpecification:
+          - AttributeName: TTL
+            Enabled: true
+        TableName: Reports
+
+    SqsScheduledEmailEmarsys:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ScheduledEmailEmarsys
+
+custom:
+  dynamodb:
+    start:
+      port: 4569
+      host: localhost
+      migrate: true
+      seed: true
+      noStart: false
+    seed:
+      OrdersV3:
+        sources:
+          - table: OrdersV3
+            sources: [
+              ./serverless/tables/OrdersV3/OrdersV3-mena-held.json,
+              ./serverless/tables/OrdersV3/OrdersV3-details.json
+            ]
+    stages:
+      - ${self:provider.stage}
+
+  s3:
+    port: 8008
+    directory: ./serverless/s3
+
+  serverless-offline-sns:
+    port: 4002
+    debug: false
+
+  serverless-offline-sqs:
+    autoCreate: true
+    apiVersion: '2012-11-05'
+    endpoint: http://localhost:9324
+    region: us-east-1
+    accessKeyId: root
+    secretAccessKey: root
+    skipCacheInvalidation: false
+
+  serverless-offline-dynamodb-streams:
+    apiVersion: '2013-12-02'
+    endpoint: http://localhost:4569
+    skipCacheInvalidation: false
+    readInterval: 500

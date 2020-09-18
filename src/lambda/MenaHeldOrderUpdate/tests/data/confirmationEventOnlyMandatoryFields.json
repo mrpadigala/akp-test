@@ -1,0 +1,10 @@
+{
+  "orderId": "testData",
+  "action": "confirmation",
+  "country": "testData",
+  "streetName": "testData",
+  "city": "testData",
+  "postcode": "testData",
+  "phone": "testData",
+  "username": "test username"
+}

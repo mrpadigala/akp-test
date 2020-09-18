@@ -1,0 +1,51 @@
+[
+  {
+    "sku": "CLU1698",
+    "type": "configurable",
+    "attribute_set": "clothes",
+    "reporting_category": "Curve",
+    "subcategory": "Dresses",
+    "swatch": "Rose",
+    "enabled": true,
+    "url_key": "",
+    "style": "Midi",
+    "composition": "100% Polyester",
+    "care_instructions": "",
+    "colour": "Black",
+    "name": "Black Feather Sliders  - 4",
+    "description": "",
+    "price": 15,
+    "specialPrice": 2.5,
+    "specialPriceActive": true,
+    "mainImage": "https://cdn-img.prettylittlething.com/a/d/b/c/adbc5c1fdc8b45d0eb1a65b47f24bd472e0ed6c7_CLU1698_2.JPG",
+    "images": [
+      "https://s3-eu-west-1.amazonaws.com/plt-aws-ire-staging-product-images/3/b/7/a/3b7aa4584f464a1dae7740ea6dc534e799b95268_CLW6047_1.jpg",
+      "https://s3-eu-west-1.amazonaws.com/plt-aws-ire-staging-product-images/7/2/b/b/72bb5de7fd406ff846e838ad809f01718e5d3f31_clw6047_2.jpg",
+      "https://s3-eu-west-1.amazonaws.com/plt-aws-ire-staging-product-images/f/3/d/d/f3dd876c8d638ee05676c3b39000fd1450d360af_clw6047_3.jpg",
+      "https://s3-eu-west-1.amazonaws.com/plt-aws-ire-staging-product-images/c/a/2/e/ca2eeabefbaa28dbf03ff75e77b45deed86b9fd5_clw6047_4.jpg",
+      "https://s3-eu-west-1.amazonaws.com/plt-aws-ire-staging-product-images/1/3/a/c/13ac900ebde7ab02b7bb2c281d78ab41753312a8_clw6047_5.jpg"
+    ],
+    "videos": [
+      "https://vimeo.com/275810316"
+    ],
+    "no_ship_to": [],
+    "only_ship_to": [],
+    "sizes": [
+      {
+        "sku": "CLU1698/4/72",
+        "size": "4"
+      },
+      {
+        "sku": "CLU1698/4/75",
+        "size": "5"
+      }
+    ],
+    "related_products": [
+      {
+        "sku": "CLW6048",
+        "colour": "Black",
+        "enabled": true
+      }
+    ]
+  }
+]

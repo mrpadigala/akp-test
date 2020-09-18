@@ -1,0 +1,45 @@
+{
+  "CustomerId": "1",
+  "BillingDetails": {
+    "Address": {
+      "City": "KIDDERMINSTER",
+      "CountryCode": "GB",
+      "Postcode": "DY10 1SA",
+      "Region": "Region",
+      "Street": "17 Offmore Road"
+    },
+    "FirstName": "TestFirst",
+    "LastName": "TestLast"
+  },
+  "CustomerDetails": {
+    "Email": "test@mail.com",
+    "LastName": "TestLast",
+    "Phone": "+44 54"
+  },
+  "Items": [
+    {
+      "Name": "Idda Dove Grey Long Sleeve Wrap Skirt Bodycon Dress",
+      "ProductType": "configurable",
+      "Size": "6",
+      "Sku": "CLS3875/100/68"
+    },
+    {
+      "Name": "Idda Dove Grey Long Sleeve Wrap Skirt Bodycon Dress",
+      "ProductOptions": "{\"info_buyRequest\":{\"uenc\":\"aHR0cHM6Ly9zdGFnaW5nLnByZXR0eWxpdHRsZXRoaW5nLmNvbS9lbW1pLWJsYWNrLWZhdXgtc3VlZGUtZXh0cmVtZS10aGlnaC1oaWdoLWhlZWxlZC1ib290cy5odG1s\",\"product\":\"129303\",\"form_key\":\"ikr6gFUsyLuvGGMh\",\"awacp\":\"1\",\"super_attribute\":{\"128\":\"7\"},\"qty\":1},\"attributes_info\":[{\"label\":\"Shoe Size\",\"value\":\"3\"},{\"label\":\"Shoe Colour\",\"value\":\"Black\"}],\"simple_name\":\"Emmi Black Faux Suede Extreme Thigh High Heeled Boots test - 3\",\"simple_sku\":\"SHQ8799\\/4\\/74\",\"product_calculations\":1,\"shipment_type\":0}",
+      "ProductType": "simple",
+      "Quantity": "3.0000",
+      "Size": "6",
+      "Sku": "CLS3875/100/68"
+    }
+  ],
+  "ShippingDetails": {
+    "Address": {
+      "CountryCode": "GB",
+      "Postcode": "DY10 1SA",
+      "Street": "17 Offmore Road"
+    },
+    "LastName": "TestLast",
+    "Method": "flatrate5_flatrate5",
+    "Type": "UK Saver Delivery - UK Saver Delivery"
+  }
+}

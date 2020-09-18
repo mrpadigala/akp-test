@@ -1,0 +1,13 @@
+{
+  "key_id": "3",
+  "event_id": 0,
+  "external_id": "test@prettylittlething.com",
+  "data": {
+    "orderNo": "120002814",
+    "customerDetails": {
+      "firstName": "First",
+      "lastName": "Last"
+    },
+    "estimatedDeliveryDate": "Wednesday 5th December"
+  }
+}

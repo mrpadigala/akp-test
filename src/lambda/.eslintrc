@@ -1,0 +1,33 @@
+{
+  "extends":  [
+    "airbnb-typescript/base"
+  ],
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint/eslint-plugin"
+  ],
+  "rules": {
+    "func-names": ["error", "never"],
+    "no-use-before-define": [ "error", { "functions": false } ],
+    "max-len": [2, 120, 4, {"ignoreUrls": true}],
+    "class-methods-use-this": "off",
+    "strict": "off",
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off",
+    "no-continue": "off",
+    "import/no-unresolved": "off",
+    "no-await-in-loop": "off",
+    "arrow-body-style": "off",
+    "arrow-parens": "off",
+    "import/no-cycle": "off",
+    "prefer-destructuring": "off",
+    "no-console": "off"
+  }
+}

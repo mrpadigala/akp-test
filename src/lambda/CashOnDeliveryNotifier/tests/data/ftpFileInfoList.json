@@ -1,0 +1,28 @@
+[
+  {
+    "name": "test0.csv",
+    "type": 1,
+    "size": 45,
+    "rawModifiedAt": "May 20 14:18",
+    "modifiedAt": null,
+    "permissions": { "user": 7, "group": 0, "world": 0 },
+    "hardLinkCount": 1,
+    "link": null,
+    "group": "users",
+    "user": "CODPrettyLittleThings",
+    "uniqueID": null
+  },
+  {
+    "name": "test1.csv",
+    "type": 1,
+    "size": 45,
+    "rawModifiedAt": "May 20 14:18",
+    "modifiedAt": null,
+    "permissions": { "user": 7, "group": 0, "world": 0 },
+    "hardLinkCount": 1,
+    "link": null,
+    "group": "users",
+    "user": "CODPrettyLittleThings",
+    "uniqueID": null
+  }
+]

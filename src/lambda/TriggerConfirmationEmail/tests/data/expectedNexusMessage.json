@@ -1,0 +1,58 @@
+{
+  "key_id": "3",
+  "event_id": 6342,
+  "external_id": "test@prettylittlething.com",
+  "data": {
+    "orderNo": "519-0439762-5306027",
+    "baseCurrencySymbol": "$",
+    "customerDetails": {
+      "firstName": "test",
+      "lastName": "NEXUS"
+    },
+    "isRoyalty": true,
+    "paymentDetails": {
+      "cashOnDelivery": false,
+      "cashOnDeliveryTotal": "0.00",
+      "discount": "-17.60",
+      "orderSubtotal": "88.00",
+      "orderTotal": "80.87",
+      "salesTax": "5.47",
+      "shippingCost": "5.00",
+      "shippingMethod": "Flat Rate - USA Standard",
+      "storeCredit": null
+    },
+    "deliveryAddress": {
+      "line1": "3558 Tuckaseegee Rd",
+      "line2": "Charlotte",
+      "line3": "28208-3052",
+      "line4": "US"
+    },
+    "discountCode": "napper20",
+    "domain": "staging.prettylittlething.us",
+    "estimatedDeliveryDate": "Friday 31st May",
+    "requestedDeliveryDate": null,
+    "shippingCountryCode": "US",
+    "productData": [
+      {
+        "Colour": "Multi",
+        "Description": "Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack",
+        "Image": "https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG",
+        "Price": "44.00",
+        "QTY": "2",
+        "Size": "0",
+        "discountPercentage": 20,
+        "discountPrice": "35.20"
+      },
+      {
+        "Colour": "Multi",
+        "Description": "Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack",
+        "Image": "https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG",
+        "Price": "44.00",
+        "Size": "2",
+        "QTY": "2",
+        "discountPercentage": 20,
+        "discountPrice": "35.20"
+      }
+    ]
+  }
+}

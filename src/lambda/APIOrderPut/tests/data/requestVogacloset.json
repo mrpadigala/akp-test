@@ -1,0 +1,48 @@
+{
+  "RequestedDeliveryDate": null,
+  "DiscountCouponDescription": null,
+  "DiscountCode": null,
+  "CurrencyCode": "GBP",
+  "BillingDetails": {
+    "Address": {
+      "Region": null,
+      "Street": "Street Name",
+      "City": "London",
+      "CountryCode": "GB",
+      "Postcode": "SLL 111"
+    },
+    "FirstName": "VOGAAE",
+    "LastName": "VOGAAE"
+  },
+  "Items": [
+    {
+      "Quantity": 1,
+      "Sku": "CLU1698/4/72"
+    },
+    {
+      "Quantity": 1,
+      "Sku": "CLU1698/4/75"
+    }
+  ],
+  "ShippingDetails": {
+    "Address": {
+      "Region": null,
+      "Street": "Street Name",
+      "City": "London",
+      "CountryCode": "GB",
+      "Postcode": "SLL 111"
+    },
+    "Price": 0,
+    "FirstName": "VOGAAE",
+    "LastName": "VOGAAE",
+    "Type": "VOGACLT",
+    "Method": "VOGACLT",
+    "Carrier": null
+  },
+  "CustomerDetails": {
+    "Email": "email@domain.com",
+    "FirstName": "VOGAAE",
+    "Phone": "111111",
+    "LastName": "VOGAAE"
+  }
+}

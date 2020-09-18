@@ -1,0 +1,25 @@
+name: "eslint"
+on:
+  push:
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add Github token
+        run: echo '//npm.pkg.github.com/:_authToken='${{ secrets.PRODUCT_SERVICE_PACKAGE }} >> ./src/lambda/.npmrc
+
+      - name: Cache node_modules
+        id: cache-node_modules
+        uses: actions/cache@v1
+        with:
+          path: src/lambda/node_modules
+          key: node_modules-${{ hashFiles('src/lambda/package-lock.json') }}
+
+      - name: NPM Install
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: npm --prefix src/lambda install
+
+      - name: Run eslint
+        run: npm --prefix src/lambda run lint

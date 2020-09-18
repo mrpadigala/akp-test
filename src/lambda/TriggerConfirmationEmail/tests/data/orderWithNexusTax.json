@@ -1,0 +1,215 @@
+{
+  "AgentData": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+  "BaseCurrencyCode": "USD",
+  "BaseOrderTotal": "80.8700",
+  "BillingDetails": {
+    "Address": {
+      "City": "Charlotte",
+      "CountryCode": "US",
+      "Postcode": "28208-3052",
+      "Region": "NC",
+      "Street": "3558 Tuckaseegee Rd"
+    },
+    "FirstName": "test",
+    "LastName": "NEXUS",
+    "Phone": "+14324324324"
+  },
+  "CurrencyCode": "USD",
+  "CustomerDetails": {
+    "CustomerId": "5795878",
+    "Email": "test@prettylittlething.com",
+    "FirstName": "test",
+    "GroupId": "1",
+    "GroupName": 0,
+    "LastName": "NEXUS",
+    "Phone": "+44352532532",
+    "Royalty": {
+      "royaltyExpiry": "2030-03-12 11:51:23",
+      "royaltyStart": "2019-03-12 11:51:23"
+    },
+    "Type": "Registered"
+  },
+  "CustomerId": "5795878",
+  "DeviceType": "Macintosh",
+  "DiscountCode": "napper20",
+  "DiscountCouponDescription": "Sitewide: 20%",
+  "Domain": "staging.prettylittlething.us",
+  "Email": "test@prettylittlething.com",
+  "EstimatedDeliveryDate": "2019-05-31",
+  "FirstName": "test",
+  "IndexPostcodeLastName": "28208-3052nexus",
+  "IP": "82.71.224.169",
+  "Items": [
+    {
+      "allocate": 0,
+      "BaseDiscount": "8.8000",
+      "BaseOriginalPrice": "22.0000",
+      "BasePrice": "22.0000",
+      "BaseRowTotal": "36.6700",
+      "BaseRowTotalInclTax": "46.5500",
+      "BaseTaxAmount": "2.5500",
+      "Colour": "Multi",
+      "Discount": "8.8000",
+      "Image": "https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG",
+      "Name": "Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack",
+      "OriginalPrice": "22.0000",
+      "Price": "22.0000",
+      "ProductOptions": "{\"attributes_info\":[{\"value\":\"0\",\"label\":\"Clothes Size\"},{\"value\":\"Multi\",\"label\":\"Colour\"}]}",
+      "ProductType": "simple",
+      "Quantity": "2.0000",
+      "RowTotal": "36.6700",
+      "RowTotalActual": 37.75,
+      "RowTotalInclTax": "46.5500",
+      "SalesTax": "2.5500",
+      "SelectedValues": [
+        {
+          "label": "Clothes Size",
+          "value": "0"
+        },
+        {
+          "label": "Colour",
+          "value": "Multi"
+        }
+      ],
+      "Size": "0",
+      "Sku": "CLU0611/29/72",
+      "Status": [
+        {
+          "Dstamp": "2019-05-17T10:00:25.297Z",
+          "Qty": 1,
+          "Status": "Shipped"
+        },
+        {
+          "Dstamp": "2019-05-17T10:01:09.829Z",
+          "Qty": 1,
+          "Status": "Refund Pending",
+          "Type": "Cancelled"
+        },
+        {
+          "Dstamp": "2019-05-17T10:01:20.968Z",
+          "Qty": 1,
+          "Status": "Refunded",
+          "Type": "Cancelled"
+        }
+      ],
+      "TaxAmount": "2.5500",
+      "TaxPercent": "7.2400"
+    },
+    {
+      "allocate": 0,
+      "BaseDiscount": "8.8000",
+      "BaseOriginalPrice": "22.0000",
+      "BasePrice": "22.0000",
+      "BaseRowTotal": "36.6700",
+      "BaseRowTotalInclTax": "46.5500",
+      "BaseTaxAmount": "2.5500",
+      "Colour": "Multi",
+      "Discount": "8.8000",
+      "Image": "https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG",
+      "Name": "Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack",
+      "OriginalPrice": "22.0000",
+      "Price": "22.0000",
+      "ProductOptions": "{\"attributes_info\":[{\"value\":\"2\",\"label\":\"Clothes Size\"},{\"value\":\"Multi\",\"label\":\"Colour\"}]}",
+      "ProductType": "simple",
+      "Quantity": "2.0000",
+      "RowTotal": "36.6700",
+      "RowTotalActual": 37.75,
+      "RowTotalInclTax": "46.5500",
+      "SalesTax": "2.5500",
+      "SelectedValues": [
+        {
+          "label": "Clothes Size",
+          "value": "2"
+        },
+        {
+          "label": "Colour",
+          "value": "Multi"
+        }
+      ],
+      "Size": "2",
+      "Sku": "CLU0611/29/68",
+      "TaxAmount": "2.5500",
+      "TaxPercent": "7.2400"
+    }
+  ],
+  "LastName": "NEXUS",
+  "OrderCreateDate": "2019-05-17",
+  "OrderCreateTime": 1558086686,
+  "OrderDate": "2019-05-17 09:51:26",
+  "OrderId": "8f105c3e-4d37-45fb-92d5-e81f697bb745",
+  "OrderNumber": "519-0439762-5306027",
+  "OrderProcessed": "true",
+  "OrderSource": "React Checkout",
+  "OrderStatus": "Partial Refund Processed",
+  "OrderTax": [
+    {
+      "Amount": "5.4700",
+      "BaseAmount": "5.4700",
+      "BaseRealAmount": "5.4700",
+      "Code": "US NEXUS TAX",
+      "NexusTaxTotal": {
+        "SalesTaxPercent": "7.2500",
+        "TotalSalesTax": "5.4700"
+      },
+      "Percent": "7.2500"
+    }
+  ],
+  "OrderTotal": "80.8700",
+  "OrderTotalDetails": {
+    "Discount": "-17.6000",
+    "Due": "0.0000",
+    "OriginalShipping": 5,
+    "Paid": "80.8700",
+    "Refunded": "0.0000",
+    "Shipping": "5.0000",
+    "Subtotal": "73.3400"
+  },
+  "PaymentDetails": {
+    "AdditionalInformation": {
+      "LastCorrelationId": null,
+      "LastTransactionId": "2JY22642HA350463M",
+      "MerchantProtectionEligibility": null,
+      "PayerAddressStatus": null,
+      "PayerEmail": "test@prettylittlething.com",
+      "PayerId": "JJHE5XUU6EDUE",
+      "PayerStatus": null,
+      "PaymentMethod": "paypal"
+    },
+    "Id": "2JY22642HA350463M",
+    "Method": "paypal_express",
+    "Status": "COMPLETED"
+  },
+  "QuoteId": "e9c23adb-dd72-45a9-8e83-c5426cf3f9ff",
+  "RawMessage": "{\"OrderNumber\":\"519-0439762-5306027\",\"QuoteId\":\"e9c23adb-dd72-45a9-8e83-c5426cf3f9ff\",\"StoreId\":\"5\",\"StoreName\":\"US Store\",\"Domain\":\"staging.prettylittlething.us\",\"OrderCreateTime\":1558086686,\"OrderCreateDate\":\"2019-05-17\",\"OrderDate\":\"2019-05-17 09:51:26\",\"OrderStatus\":\"processing\",\"RequestedDeliveryDate\":null,\"EstimatedDeliveryDate\":\"2019-05-31\",\"Email\":\"test@prettylittlething.com\",\"CustomerId\":\"5795878\",\"CurrencyCode\":\"USD\",\"BaseCurrencyCode\":\"USD\",\"OrderTotal\":\"80.8700\",\"BaseOrderTotal\":\"80.8700\",\"DeviceType\":\"Macintosh\",\"IP\":\"82.71.224.169\",\"DiscountCode\":\"napper20\",\"DiscountCouponDescription\":\"Sitewide: 20%\",\"TaxAmount\":\"5.4700\",\"LastName\":\"NEXUS\",\"FirstName\":\"test\",\"Items\":[{\"Sku\":\"CLU0611/29/72\",\"Name\":\"Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack\",\"ProductOptions\":\"{\\\"attributes_info\\\":[{\\\"value\\\":\\\"0\\\",\\\"label\\\":\\\"Clothes Size\\\"},{\\\"value\\\":\\\"Multi\\\",\\\"label\\\":\\\"Colour\\\"}]}\",\"Size\":\"0\",\"Colour\":\"Multi\",\"SelectedValues\":[{\"value\":\"0\",\"label\":\"Clothes Size\"},{\"value\":\"Multi\",\"label\":\"Colour\"}],\"Image\":\"https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG\",\"ProductType\":\"simple\",\"Quantity\":\"2.0000\",\"OriginalPrice\":\"22.0000\",\"BaseOriginalPrice\":\"22.0000\",\"RowTotal\":\"36.6700\",\"BaseRowTotal\":\"36.6700\",\"Price\":\"22.0000\",\"BasePrice\":\"22.0000\",\"TaxPercent\":\"7.2400\",\"TaxAmount\":\"2.5500\",\"BaseTaxAmount\":\"2.5500\",\"RowTotalInclTax\":\"46.5500\",\"BaseRowTotalInclTax\":\"46.5500\",\"Discount\":\"8.8000\",\"BaseDiscount\":\"8.8000\",\"RowTotalActual\":37.75,\"SalesTax\":\"2.5500\"},{\"Sku\":\"CLU0611/29/68\",\"Name\":\"Basic Black & White V Neck Shortsleeve Thong Bodysuit 2 Pack\",\"ProductOptions\":\"{\\\"attributes_info\\\":[{\\\"value\\\":\\\"2\\\",\\\"label\\\":\\\"Clothes Size\\\"},{\\\"value\\\":\\\"Multi\\\",\\\"label\\\":\\\"Colour\\\"}]}\",\"Size\":\"2\",\"Colour\":\"Multi\",\"SelectedValues\":[{\"value\":\"2\",\"label\":\"Clothes Size\"},{\"value\":\"Multi\",\"label\":\"Colour\"}],\"Image\":\"https://cdn-img.prettylittlething.com/5/b/5/1/5b519267be315f33ec602c8afba7a80a6b57a41e_CLU0611_1.JPG\",\"ProductType\":\"simple\",\"Quantity\":\"2.0000\",\"OriginalPrice\":\"22.0000\",\"BaseOriginalPrice\":\"22.0000\",\"RowTotal\":\"36.6700\",\"BaseRowTotal\":\"36.6700\",\"Price\":\"22.0000\",\"BasePrice\":\"22.0000\",\"TaxPercent\":\"7.2400\",\"TaxAmount\":\"2.5500\",\"BaseTaxAmount\":\"2.5500\",\"RowTotalInclTax\":\"46.5500\",\"BaseRowTotalInclTax\":\"46.5500\",\"Discount\":\"8.8000\",\"BaseDiscount\":\"8.8000\",\"RowTotalActual\":37.75,\"SalesTax\":\"2.5500\"}],\"OrderTax\":[{\"BaseAmount\":\"5.4700\",\"BaseRealAmount\":\"5.4700\",\"NexusTaxTotal\":{\"SalesTaxPercent\":\"7.2500\",\"TotalSalesTax\":\"5.4700\"},\"Code\":\"US NEXUS TAX\",\"Percent\":\"7.2500\",\"Amount\":\"5.4700\"}],\"BillingDetails\":{\"Address\":{\"City\":\"Charlotte\",\"CountryCode\":\"US\",\"Postcode\":\"28208-3052\",\"Region\":\"NC\",\"Street\":\"3558 Tuckaseegee Rd\"},\"FirstName\":\"test\",\"LastName\":\"NEXUS\",\"Phone\":\"+14324324324\"},\"ShippingDetails\":{\"Address\":{\"City\":\"Charlotte\",\"CountryCode\":\"US\",\"Postcode\":\"28208-3052\",\"Region\":\"NC\",\"Street\":\"3558 Tuckaseegee Rd\"},\"FirstName\":\"test\",\"LastName\":\"NEXUS\",\"Phone\":\"+14324324324\",\"BaseDiscountAmount\":\"0.0000\",\"BasePrice\":\"5.0000\",\"Carrier\":null,\"DiscountAmount\":\"0.0000\",\"Method\":\"flatrate12_flatrate12\",\"Price\":\"5.0000\",\"Type\":\"Flat Rate - USA Standard\"},\"CustomerDetails\":{\"Type\":\"Registered\",\"Email\":\"test@prettylittlething.com\",\"Royalty\":{\"royaltyExpiry\":\"2030-03-12 11:51:23\",\"royaltyStart\":\"2019-03-12 11:51:23\"},\"FirstName\":\"test\",\"Phone\":\"+44352532532\",\"LastName\":\"NEXUS\",\"CustomerId\":\"5795878\",\"GroupId\":\"1\",\"GroupName\":0},\"PaymentDetails\":{\"AdditionalInformation\":{\"PayerId\":\"JJHE5XUU6EDUE\",\"PayerStatus\":null,\"PayerAddressStatus\":null,\"LastTransactionId\":\"2JY22642HA350463M\",\"PayerEmail\":\"test@prettylittlething.com\",\"MerchantProtectionEligibility\":null,\"LastCorrelationId\":null,\"PaymentMethod\":\"paypal\"},\"Status\":\"COMPLETED\",\"Id\":\"2JY22642HA350463M\",\"Method\":\"paypal_express\"},\"IndexPostcodeLastName\":\"28208-3052nexus\",\"OrderTotalDetails\":{\"Discount\":\"-17.6000\",\"Due\":\"0.0000\",\"Paid\":\"80.8700\",\"Refunded\":\"0.0000\",\"OriginalShipping\":5,\"Shipping\":\"5.0000\",\"Subtotal\":\"73.3400\"},\"SiteViewMode\":\"desktop\",\"AgentData\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36\",\"OrderSource\":\"React Checkout\"}",
+  "RequestedDeliveryDate": null,
+  "ShippingDetails": {
+    "Address": {
+      "City": "Charlotte",
+      "CountryCode": "US",
+      "Postcode": "28208-3052",
+      "Region": "NC",
+      "Street": "3558 Tuckaseegee Rd"
+    },
+    "BaseDiscountAmount": "0.0000",
+    "BasePrice": "5.0000",
+    "Carrier": null,
+    "DiscountAmount": "0.0000",
+    "FirstName": "test",
+    "LastName": "NEXUS",
+    "Method": "flatrate12_flatrate12",
+    "Phone": "+14324324324",
+    "Price": "5.0000",
+    "Type": "Flat Rate - USA Standard",
+    "OriginalShipping": "5.0000"
+  },
+  "SiteViewMode": "desktop",
+  "Status": [
+    {
+      "Dstamp": "2019-05-17T10:00:25.297Z",
+      "Status": "Shipped"
+    }
+  ],
+  "StoreId": "5",
+  "StoreName": "US Store",
+  "TaxAmount": "5.4700"
+}

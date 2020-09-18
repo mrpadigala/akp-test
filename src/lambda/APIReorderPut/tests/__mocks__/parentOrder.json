@@ -1,0 +1,79 @@
+{
+  "StoreId": "1",
+  "CurrencyCode": "GBP",
+  "DiscountCode": "",
+  "DiscountCouponDescription": "",
+  "BillingDetails": {
+    "Address": {
+      "City": "Manchester",
+      "CountryCode": "GB",
+      "Postcode": "M40 7FA",
+      "Region": "",
+      "Street": "89 Marcer Road"
+    },
+    "FirstName": "tony",
+    "LastName": "holloway"
+  },
+  "CustomerDetails": {
+    "CustomerId": "5795726",
+    "Email": "tony.holloway@prettylittlething.com",
+    "FirstName": "tony",
+    "LastName": "holloway",
+    "Phone": "+44 235325332"
+  },
+  "Items": [
+    {
+      "Sku": "CLS9018\/35\/48",
+      "Quantity": 1,
+      "Name": "Pink & White Striped Ribbon Belt",
+      "ProductType": "configurable",
+      "Size": "0",
+      "OriginalPrice": 1.5,
+      "Price": 1,
+      "SelectedValues": [
+        {
+          "value": "1",
+          "label": "Belt Size"
+        },
+        {
+          "value": "Pink",
+          "label": "Colour"
+        }
+      ]
+    },
+    {
+      "Sku": "CLS9018\/35\/49",
+      "Quantity": 1,
+      "Name": "Blue Striped Ribbon Belt",
+      "ProductType": "configurable",
+      "Size": "0",
+      "OriginalPrice": 1.5,
+      "Price": 100,
+      "SelectedValues": [
+        {
+          "value": "10",
+          "label": "Belt Size"
+        },
+        {
+          "value": "Blue",
+          "label": "Colour"
+        }
+      ]
+    }
+  ],
+  "ShippingDetails": {
+    "Address": {
+      "City": "Manchester",
+      "CountryCode": "GB",
+      "Postcode": "M40 7FA",
+      "Region": "",
+      "Street": "89 Marcer Road"
+    },
+    "FirstName": "tony",
+    "LastName": "holloway",
+    "BasePrice": 1.99,
+    "Price": 1.99,
+    "Method": "flatrate2_flatrate2",
+    "Type": "UK Next Day delivery"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Id": "a35c5fd3-9a83-4cb2-9a16-be2887ff08d1",
+  "RefundId": "OID-1111-35",
+  "OrderNumber": "1111",
+  "PaymentMethod": "worldpay",
+  "RefundType": "1",
+  "RefundShipping": "Yes",
+  "Source": "OMS_Interface",
+  "OrderLines": [
+    {
+      "Data": "OID-1111-35",
+      "KeyTable": null,
+      "LineTotal": "7.50000",
+      "ProductSku": "CLQ5180/42/70",
+      "Quantity": "1.00000"
+    }
+  ],
+  "IsException": "false",
+  "IsProcessed": "Pending",
+  "CreatedAt": 1590062854503,
+  "RefundedAt": 0
+}

@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "lib": [
+      "es2015",
+      "es2018"
+    ],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "sourceMap": true,
+    "allowJs": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "noImplicitReturns": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "**/*.test.ts"
+  ],
+  "include": [
+    "./Core",
+    "./MenaHeldOrders",
+    "./MenaHeldOrdersExports",
+    "./MenaHeldOrderUpdate",
+    "./CashOnDeliveryNotifier",
+    "./StateMachine",
+    "./OrderStreamProcessor",
+    "./DatalakeExport",
+    "./WorldpayNotificationsSave"
+  ]
+}

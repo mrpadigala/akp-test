@@ -1,0 +1,43 @@
+{
+  "MissingSku": [],
+  "Products": [
+    {
+      "Colour": "Black",
+      "Image": "https://cdn-img.prettylittlething.com/a/d/b/c/adbc5c1fdc8b45d0eb1a65b47f24bd472e0ed6c7_CLU1698_2.JPG",
+      "Name": "Black Feather Sliders  - 4",
+      "Options": [
+        {
+          "label": "Colour",
+          "value": "Black"
+        },
+        {
+          "label": "Size",
+          "value": "4"
+        }
+      ],
+      "OriginalPrice": 15,
+      "Size": "4",
+      "Sku": "CLU1698-72",
+      "SpecialPrice": false
+    },
+    {
+      "Colour": "Black",
+      "Image": "https://cdn-img.prettylittlething.com/a/d/b/c/adbc5c1fdc8b45d0eb1a65b47f24bd472e0ed6c7_CLU1698_2.JPG",
+      "Name": "Black Feather Sliders  - 4",
+      "Options": [
+        {
+          "label": "Colour",
+          "value": "Black"
+        },
+        {
+          "label": "Size",
+          "value": "5"
+        }
+      ],
+      "OriginalPrice": 15,
+      "Size": "5",
+      "Sku": "CLU1698-75",
+      "SpecialPrice": false
+    }
+  ]
+}

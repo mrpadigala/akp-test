@@ -1,0 +1,114 @@
+{
+  "AgentData": null,
+  "BaseCurrencyCode": "GBP",
+  "BaseOrderTotal": "15.9900",
+  "BillingDetails": {
+    "Address": {
+      "City": "Manchester",
+      "CountryCode": "GB",
+      "Postcode": "M18 7AA",
+      "Region": "Greater Manchester",
+      "Street": "Texaco\n512 Hyde Road"
+    },
+    "FirstName": "Tony",
+    "LastName": "Test",
+    "MiddleName": null
+  },
+  "CollectPlusAccountCode": null,
+  "CollectPlusSiteNumber": null,
+  "CurrencyCode": "GBP",
+  "CustomerDetails": {
+    "Email": "tony.holloway@prettylittlething.com",
+    "FirstName": "Tony",
+    "LastName": "Holloway",
+    "MiddleName": null,
+    "Phone": "+44 53523523523532",
+    "Title": null,
+    "Type": "Registered"
+  },
+  "CustomerId": "983",
+  "DeviceType": "Windows NT 10.0",
+  "DiscountCode": null,
+  "DiscountCouponDescription": null,
+  "Domain": "staging.prettylittlething.com",
+  "Email": "tony.holloway@prettylittlething.com",
+  "HDNCode": null,
+  "IndexPostcodeLastName": "M187AAHolloway",
+  "IP": "172.30.2.210",
+  "Items": [
+    {
+      "allocate": 0,
+      "BaseDiscount": "0.0000",
+      "BaseOriginalPrice": "14.0000",
+      "BasePrice": "11.6667",
+      "BaseRefunded": "0.0000",
+      "BaseRowTotal": "11.6667",
+      "BaseRowTotalInclTax": "14.0000",
+      "BaseTaxAmount": "2.3333",
+      "Discount": "0.0000",
+      "Name": "Stone Statement Belt Tie Jumper  - One Size",
+      "OriginalPrice": "14.0000",
+      "Price": "11.6667",
+      "ProductType": "simple",
+      "Quantity": "1.0000",
+      "Refunded": "0.0000",
+      "RowTotal": "11.6667",
+      "RowTotalInclTax": "14.0000",
+      "Size": null,
+      "Sku": "CLT1366/23/48",
+      "TaxAmount": "2.3333",
+      "TaxPercent": "20.0000"
+    }
+  ],
+  "OrderDate": "2018-07-02 14:34:58",
+  "OrderDispatchDate": null,
+  "OrderId": "07845ae6-7620-4aef-837a-33914aa9ab56",
+  "OrderNumber": "120000493",
+  "OrderStatus": "pending",
+  "OrderTax": [
+    {
+      "Amount": "2.3333",
+      "BaseAmount": "2.3333",
+      "BaseRealAmount": "2.3333",
+      "Code": "UK VAT GB",
+      "Percent": "20.0000"
+    }
+  ],
+  "OrderTotal": "15.9900",
+  "OrderTotalDetails": {
+    "Discount": "0.0000",
+    "Due": null,
+    "OriginalShipping": 1.99,
+    "Paid": "15.9900",
+    "Refunded": null,
+    "Shipping": "1.9900",
+    "Subtotal": "11.6667"
+  },
+  "PaymentDetails": {
+    "Id": "1530542099",
+    "Method": "worldpay_cc",
+    "Status": "captured"
+  },
+  "RequestedDeliveryDate": null,
+  "Shipments": [],
+  "ShippingDetails": {
+    "Address": {
+      "City": "Manchester",
+      "CountryCode": "GB",
+      "Postcode": "M18 7AA",
+      "Region": "Greater Manchester",
+      "Street": "Texaco\n512 Hyde Road"
+    },
+    "BasePrice": "1.9900",
+    "FirstName": "Tony",
+    "LastName": "Test",
+    "Method": "flatrate10_flatrate10",
+    "MiddleName": null,
+    "Price": "1.9900",
+    "Title": "-",
+    "Type": "Flat Rate - UK Super Saver"
+  },
+  "SMSAlert": null,
+  "StoreId": "1",
+  "TaxAmount": "2.3333"
+}

@@ -1,0 +1,8 @@
+{
+  "ShippingDetails.Address.City": "testData",
+  "ShippingDetails.Address.Country": "testData",
+  "ShippingDetails.Address.Postcode": "testData",
+  "CustomerDetails.Phone": "testData",
+  "ShippingDetails.Address.Street": "testData",
+  "ShippingDetails.Address.CountryCode": "testData"
+}

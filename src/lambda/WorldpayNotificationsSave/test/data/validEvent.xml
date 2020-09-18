@@ -1,0 +1,19 @@
+<!DOCTYPE paymentService PUBLIC "-//Worldpay//DTD Worldpay PaymentService v1//EN"
+        "http://dtd.worldpay.com/paymentService_v1.dtd">
+<paymentService version="1.4" merchantCode="Your_merchant_code">
+    <notify>
+        <orderStatusEvent orderCode="12312-123-123213-213"> <!--The orderCode you supplied in the order-->
+            <payment>
+                <paymentMethod>ECMC-SSL</paymentMethod>
+                <amount value="2400" currencyCode="EUR" exponent="2" debitCreditIndicator="credit"/>
+                <lastEvent>AUTHORISED</lastEvent>
+                <AuthorisationId id="622206"/>
+                <balance accountType="IN_PROCESS_AUTHORISED">
+                    <amount value="2400" currencyCode="EUR" exponent="2" debitCreditIndicator="credit"/>
+                </balance>
+                <cardNumber>5255********2490</cardNumber>
+                <riskScore value="0"/>
+            </payment>
+        </orderStatusEvent>
+    </notify>
+</paymentService>

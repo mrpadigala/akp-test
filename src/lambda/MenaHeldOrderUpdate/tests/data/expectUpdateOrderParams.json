@@ -1,0 +1,17 @@
+{
+  "CustomerDetails.Phone": "testData",
+  "CustomerDetails.PassportId": "testData",
+  "ShippingDetails.Address.Country": "testData",
+  "ShippingDetails.Address.City": "testData",
+  "ShippingDetails.Address.Street": "testData",
+  "ShippingDetails.Address.CountryCode": "testData",
+  "ShippingDetails.Address.Postcode": "testData",
+  "ShippingDetails.Address.Region": "testData",
+  "ShippingDetails.Additional.BuildingName": "testData",
+  "ShippingDetails.Additional.AddressDetails": "testData",
+  "ShippingDetails.Additional.AlternateTelephone": "testData",
+  "ShippingDetails.Additional.District": "testData",
+  "ShippingDetails.Additional.Geo.Lat": "testData",
+  "ShippingDetails.Additional.Geo.Lng": "testData",
+  "ShippingDetails.Additional.Landmark": "testData"
+}

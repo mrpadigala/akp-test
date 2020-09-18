@@ -1,0 +1,88 @@
+{
+  "Records": [
+    {
+      "eventID": "7de3041dd709b024af6f29e4fa13d34c",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-west-2",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1479499740,
+        "Keys": {
+          "Timestamp": {
+            "S": "2016-11-18:12:09:36"
+          },
+          "Username": {
+            "S": "John Doe"
+          }
+        },
+        "NewImage": {
+          "OrderId": {
+            "S": "2321-123-123123"
+          },
+          "AttributeId": {
+            "S": "Details"
+          },
+          "Timestamp": {
+            "S": "2016-11-18:12:09:36"
+          },
+          "Message": {
+            "S": "This is a bark from the Woofer social network"
+          },
+          "Count": {
+            "N": 55
+          },
+          "Username": {
+            "S": "John Doe"
+          }
+        },
+        "SequenceNumber": "13021600000000001596893679",
+        "SizeBytes": 112,
+        "StreamViewType": "NEW_IMAGE"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/BarkTable/stream/2016-11-16T20:42:48.104"
+    },
+    {
+      "eventID": "7de3041dd709b024af6f29f4fa13d34c",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-west-2",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1479494740,
+        "Keys": {
+          "Timestamp": {
+            "S": "2016-12-18:12:09:36"
+          },
+          "Username": {
+            "S": "Andrew"
+          }
+        },
+        "NewImage": {
+          "OrderId": {
+            "S": "32424-2343243-4343432"
+          },
+          "AttributeId": {
+            "S": "Details"
+          },
+          "Timestamp": {
+            "S": "2016-12-18:12:09:36"
+          },
+          "Message": {
+            "S": "qwerty"
+          },
+          "Count": {
+            "N": 99
+          },
+          "Username": {
+            "S": "John Doe"
+          }
+        },
+        "SequenceNumber": "13023243201596893679",
+        "SizeBytes": 112,
+        "StreamViewType": "NEW_IMAGE"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/BarkTable/stream/2016-12-16T20:42:48.104"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "Item": {
+    "CreatedAt": 1591273755047,
+    "Data": {
+      "OrderNumber": "12312-123123-123123-123",
+      "PaymentStatus": "Paid",
+      "Status": "Delivered"
+    },
+    "EntityId": "mena-order",
+    "EntityType": "status#2020-06-16-11-46#UUID",
+    "TTL": 1622809755
+  },
+  "TableName": "Reports"
+}

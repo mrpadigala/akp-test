@@ -1,0 +1,32 @@
+version: 0.2
+
+env:
+  variables:
+    SERVICE_NAME: "OMS-Order-Processor"
+    API_DEFINITION_FILE: "src/api/v1/swagger.yml"
+  parameter-store:
+    GITHUB_TOKEN: "/ccs/pipeline/codebuild/github-token"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - aws s3 cp $API_DEFINITION_FILE s3://plt-stag.deployment-assets.eu-west-1/${SERVICE_NAME}/api/v1/swagger.yml --sse
+      - aws s3 cp $API_DEFINITION_FILE s3://plt-stag.deployment-assets.eu-west-1/${SERVICE_NAME}/api/notifications/swagger.yml --sse
+      - echo "@prettylittlething:registry=https://npm.pkg.github.com" > ./src/lambda/.npmrc
+      - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ./src/lambda/.npmrc
+      - npm install --only=prod --prefix ./src/lambda
+      - npm run build --prefix ./src/lambda
+      - rm ./src/lambda/node_modules/.bin/tsc
+      - rm ./src/lambda/node_modules/.bin/tsserver
+      - rm -r ./src/lambda/node_modules/typescript
+      - cp -R ./src/lambda/node_modules ./src/lambda/dist
+      - aws cloudformation package --template-file $TEMPLATE_FILE --s3-bucket $ARTIFACTS_S3_BUCKET
+                                   --output-template-file outputTemplate.yaml
+
+artifacts:
+  type: zip
+  files:
+    - $TEMPLATE_FILE
+    - outputTemplate.yaml

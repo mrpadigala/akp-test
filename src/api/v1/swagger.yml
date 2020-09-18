@@ -1,0 +1,202 @@
+---
+swagger: "2.0"
+info:
+  version: "2019-09-17T14:13:02Z"
+  title: "mena/v1"
+  description: "This is an API for the prettylittlething `mena`"
+  contact:
+    email: "devops.team@prettylittlething.com"
+host: "api.prettylittlething.io"
+basePath: "/mena-v1"
+tags:
+- name: "mena"
+  description: "All about mena"
+schemes:
+- "https"
+
+paths:
+  /mena/held-orders:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/mena"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MenaHeldOrders.Arn}:live/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+    options:
+      tags:
+      - "mena"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+  /mena/held-orders/{order-id}:
+    patch:
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/mena"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MenaHeldOrderUpdate.Arn}:live/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+    options:
+      tags:
+      - "mena"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+
+  /mena/held-orders/export:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/mena"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MenaHeldOrdersExports.Arn}:live/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+    options:
+      tags:
+      - "mena"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+  
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
+  Method:
+    type: "object"
+    title: "Method"
+    properties:
+      mena:
+        type: "string"
+  mena:
+    type: "object"
+    title: "mena"
+    required:
+    - "methods"
+    properties:
+      methods:
+        type: "array"
+        items:
+          $ref: "#/definitions/Method"
+        

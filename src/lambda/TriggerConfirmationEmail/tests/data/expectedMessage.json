@@ -1,0 +1,61 @@
+{
+  "key_id": "3",
+  "event_id": 6786,
+  "external_id": "test@prettylittlething.com",
+  "data": {
+    "orderNo": "120002814",
+    "baseCurrencySymbol": "£",
+    "customerDetails": {
+      "firstName": "First",
+      "lastName": "Last"
+    },
+    "isRoyalty": false,
+    "paymentDetails": {
+      "cashOnDelivery": false,
+      "cashOnDeliveryTotal": "0.00",
+      "discount": "0.00",
+      "orderTotal": "168.00",
+      "orderSubtotal": "148.00",
+      "shippingMethod": "PLT Royalty unlimited next day delivery for a year - PLT Royalty unlimited next day delivery for a year",
+      "shippingCost": "20.00",
+      "storeCredit": null
+    },
+    "deliveryAddress": {
+      "line1": "2 Marleyer Close",
+      "line2": "Manchester",
+      "line3": "M40 0AB",
+      "line4": "GB"
+    },
+    "discountCode": null,
+    "domain": "staging.prettylittlething.com",
+    "estimatedDeliveryDate": "Wednesday 5th December",
+    "requestedDeliveryDate": "Wednesday 5th December",
+    "shippingCountryCode": "GB",
+    "productData": [
+      {
+        "Image": "https://cdn-images.prettylittlething.com/6/d/e/0/6de0b521ea1f755134b44b2b5e4cb352f6601ec2_SHQ8799_1.JPG",
+        "Description": "Emmi Black Faux Suede Extreme Thigh High Heeled Boots test",
+        "Size": "3",
+        "Colour": null,
+        "Price": "70.00",
+        "QTY": "2"
+      },
+      {
+        "Image": null,
+        "Description": "St. Tropez Self Tan Classic Mousse - One Size",
+        "Size": null,
+        "Colour": null,
+        "Price": "60.00",
+        "QTY": "3"
+      },
+      {
+        "Image": null,
+        "Description": "Land of Lashes Belle Lash - One Size",
+        "Size": "3",
+        "Colour": "Black",
+        "Price": "18.00",
+        "QTY": "2"
+      }
+    ]
+  }
+}

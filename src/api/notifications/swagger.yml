@@ -1,0 +1,65 @@
+---
+swagger: "2.0"
+info:
+  version: "2019-09-17T14:13:02Z"
+  title: "oms-notifications/public/v1"
+  description: "This is an API for the prettylittlething OMS-Order-process-notifications"
+  contact:
+    email: "devops.team@prettylittlething.com"
+# host: "api.prettylittlething.io"
+# basePath: "v1"
+tags:
+- name: "OMS-Order-Processor"
+  description: "All about OMS-Order-Processor and notifications"
+schemes:
+- "https"
+
+paths:
+  /notifications/worldpay:
+    post:
+      tags:
+      - "OMS-Order-Processor"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/OMS-Notifications"
+      x-amazon-apigateway-integration:
+        # credentials: 
+        #    Fn::GetAtt: OMSIamRoleApiGatewayNotificationsEndpoints.Arn
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OMSOrderProcessorWorldpayNotificationsSave.Arn}:live/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+   
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+
+definitions:
+  Method:
+    type: "object"
+    title: "Method"
+    properties:
+      mena:
+        type: "string"
+  OMS-Notifications:
+    type: "object"
+    title: "OMS-Notifications"
+    required:
+    - "methods"
+    properties:
+      methods:
+        type: "array"
+        items:
+          $ref: "#/definitions/Method"
+        

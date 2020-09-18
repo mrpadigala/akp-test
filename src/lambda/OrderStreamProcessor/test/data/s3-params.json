@@ -1,0 +1,12 @@
+{
+  "/orders/2321-123-123123/1597300497_Details.json": {
+    "Bucket": "bucket-name-for-orders",
+    "Key": "/orders/2321-123-123123/1597300497_Details.json",
+    "Body": "{\"OrderId\":\"2321-123-123123\",\"AttributeId\":\"Details\",\"Timestamp\":\"2016-11-18:12:09:36\",\"Message\":\"This is a bark from the Woofer social network\",\"Count\":55,\"Username\":\"John Doe\"}"
+  },
+  "/orders/32424-2343243-4343432/1597300497_Details.json": {
+    "Bucket": "bucket-name-for-orders",
+    "Key": "/orders/32424-2343243-4343432/1597300497_Details.json",
+    "Body": "{\"OrderId\":\"32424-2343243-4343432\",\"AttributeId\":\"Details\",\"Timestamp\":\"2016-12-18:12:09:36\",\"Message\":\"qwerty\",\"Count\":99,\"Username\":\"John Doe\"}"
+  }
+}

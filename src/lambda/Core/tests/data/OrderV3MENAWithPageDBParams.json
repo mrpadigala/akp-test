@@ -1,0 +1,17 @@
+{
+  "ExclusiveStartKey": {
+    "AttributeId": "MENA#Held",
+    "CreatedTimestamp": 1589562379,
+    "OrderId": "1620-1362826-4242762"
+  },
+  "ExpressionAttributeNames": {
+    "#AttributeId": "AttributeId"
+  },
+  "ExpressionAttributeValues": {
+    ":AttributeId": "MENA#Held"
+  },
+  "IndexName": "IndexAttributeId",
+  "KeyConditionExpression": "#AttributeId = :AttributeId",
+  "Limit": 50,
+  "TableName": "OrdersV3"
+}

@@ -1,0 +1,14 @@
+{
+  "Item": {
+    "CreatedAt": 1487076708999,
+    "Data": {
+      "OrderNumber": "1234-56645-23143-234",
+      "PaymentStatus": "Unpaid",
+      "Status": "Returned"
+    },
+    "EntityId": "mena-order",
+    "EntityType": "status#2017-02-14-12-51#86d0db01-cba5-45ce-981e-9841b0888999",
+    "TTL": 1494762708
+  },
+  "TableName": "Reports"
+}

@@ -1,0 +1,5 @@
+#,Waybill No,Reference,Is RTO,Billing Type,COD Amount,Consignee Name,Org,Dest,PickUp Date,Last Event,Package Status,Exception
+1,6xxxxxxx,100306874V,FALSE,COD,272.25,John Doe,LHR,RUH,21/03/2020,22/03/2020 13:12,Delivered,
+2,6xxxxxxx,200438510V,TRUE,COD,109.78,Jane Doe,LHR,RUH,21/03/2020,22/03/2020 13:12,,Return to Origin New Waybill No : 6xxxxxxx,
+3,6xxxxxxx,482910584V,TRUE,,135.21,Jack,LHR,RUH,16/08/2020,17/08/2020 11:01,Returned To Origin,
+4,6xxxxxxx,,FALSE,COD,155.11,Jill,LHR,RUH,16/08/2020,17/08/2020 11:02,Delivered,

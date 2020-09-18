@@ -1,0 +1,162 @@
+{
+    "took": 3,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 2,
+        "max_score": 11.354563,
+        "hits": [
+            {
+                "_index": "akeneo_pim_product_and_product_model",
+                "_type": "pim_catalog_product",
+                "_id": "product_74146",
+                "_score": 11.354563,
+                "_source": {
+                    "identifier": "CLU1698/4/72",
+                    "values": {
+                        "colour-option": {
+                            "<all_channels>": {
+                                "<all_locales>": "colour_black"
+                            }
+                        },
+                        "shoesize-option": {
+                            "<all_channels>": {
+                                "<all_locales>": "shoesize_4"
+                            }
+                        },
+                        "price-prices": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "AUD": "35.00",
+                                    "EUR": "21.00",
+                                    "GBP": "15.00",
+                                    "CAD": "",
+                                    "USD": "30.00"
+                                }
+                            }
+                        },
+                        "image-media": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "key": "a/d/b/c/adbc5c1fdc8b45d0eb1a65b47f24bd472e0ed6c7_CLU1698_2.JPG"
+                                }
+                            }
+                        },
+                        "name_localized-text": {
+                            "ecommerce": {
+                                "en_GB": "Black Feather Sliders  - 4"
+                            }
+                        }
+                    },
+                    "family_variant": "shoesize"
+                }
+            },
+            {
+                "_index": "akeneo_pim_product_and_product_model",
+                "_type": "pim_catalog_product",
+                "_id": "product_74141",
+                "_score": 11.121067,
+                "_source": {
+                    "identifier": "CLU1698/4/75",
+                    "values": {
+                        "colour-option": {
+                            "<all_channels>": {
+                                "<all_locales>": "colour_black"
+                            }
+                        },
+                        "cost-prices": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "AUD": "9.90",
+                                    "EUR": "6.30",
+                                    "GBP": "4.50",
+                                    "CAD": "",
+                                    "USD": "9.00"
+                                }
+                            }
+                        },
+                        "shoesize-option": {
+                            "<all_channels>": {
+                                "<all_locales>": "shoesize_5"
+                            }
+                        },
+                        "price-prices": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "AUD": "35.00",
+                                    "EUR": "21.00",
+                                    "GBP": "15.00",
+                                    "CAD": "",
+                                    "USD": "30.00"
+                                }
+                            }
+                        },
+                        "special_price-prices": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "AUD": "38.00",
+                                    "EUR": "25.00",
+                                    "GBP": "2.50",
+                                    "USD": "25.00"
+                                }
+                            }
+                        },
+                        "special_from-date": {
+                            "<all_channels>": {
+                                "en_AU": "2017-11-22",
+                                "en_GB": "2017-11-22",
+                                "en_IE": "2017-11-22",
+                                "en_US": "2017-11-22",
+                                "fr_FR": "2017-11-22"
+                            }
+                        },
+                        "special_to-date": {
+                            "<all_channels>": {
+                                "en_AU": "2017-11-27",
+                                "en_GB": "2050-11-27",
+                                "en_IE": "2017-11-27",
+                                "en_US": "2017-11-27",
+                                "fr_FR": "2017-11-27"
+                            }
+                        },
+                        "special_from_time-text": {
+                            "<all_channels>": {
+                                "en_AU": "23:55",
+                                "en_GB": "23:55",
+                                "en_IE": "23:55",
+                                "en_US": "23:55",
+                                "fr_FR": "23:55"
+                            }
+                        },
+                        "special_to_time-text": {
+                            "<all_channels>": {
+                                "en_AU": "00:01",
+                                "en_GB": "00:01",
+                                "en_IE": "00:01",
+                                "en_US": "00:01",
+                                "fr_FR": "00:01"
+                            }
+                        },   
+                        "image-media": {
+                            "<all_channels>": {
+                                "<all_locales>": {
+                                    "key": "a/d/b/c/adbc5c1fdc8b45d0eb1a65b47f24bd472e0ed6c7_CLU1698_2.JPG"
+                                }
+                            }
+                        },
+                        "name_localized-text": {
+                            "ecommerce": {
+                                "en_GB": "Black Feather Sliders  - 5"
+                            }
+                        }
+                    },
+                    "family_variant": "shoesize"
+                }
+            }
+        ]
+    }
+}

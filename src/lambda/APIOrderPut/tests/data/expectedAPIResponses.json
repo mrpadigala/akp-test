@@ -1,0 +1,14 @@
+{
+  "Positive": {
+    "statusCode": 200,
+    "body": "{\"OrderNumber\":\"119-0370414-9083200\"}"
+  },
+  "ValidationError": {
+    "statusCode": 422,
+    "body": "{\"Message\":\"Validation error\",\"Errors\":[\"instance.CustomerDetails requires property \\\"FirstName\\\"\",\"instance.Items[0] requires property \\\"Quantity\\\"\",\"instance.Items[1].Quantity is not of a type(s) number\",\"instance.ShippingDetails.Address requires property \\\"City\\\"\",\"instance.ShippingDetails requires property \\\"FirstName\\\"\",\"instance requires property \\\"CurrencyCode\\\"\"]}"
+  },
+  "ServerError": {
+      "statusCode": 500,
+      "body": "{\"Message\":\"Server error\",\"Errors\":[\"Errors...\"]}"
+  }
+}

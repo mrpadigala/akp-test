@@ -1,0 +1,1287 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: OMS Order Processor
+
+##########################################################################################
+### General Parameters
+##########################################################################################
+Parameters:
+  DMSAPIKey:
+    Description: Shorter, lowercase environment name
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: DMS-API-key
+
+  RoyaltyAPIKey:
+    Description: Shorter, lowercase environment name
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: Apply-Royalty-API-Key
+
+  EnvironmentNameShorthand:
+    Description: Shorter, lowercase environment name
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: EnvironmentNameShorthand
+
+  CATagEnvironment:
+    Description: Cost Analysis Tag
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /tags/cost-analysis/Environment
+
+  ApplicationFullName:
+    Description: An application name that will be tagged on resources
+    Type: String
+    Default: OMS-Order-Processor
+
+  CATagProject:
+    Description: Cost Analysis Tag
+    Type: String
+    Default: OMS-Order-Processor
+
+  NodeVersion:
+    Description: Node Version
+    Type: String
+    Default: nodejs12.x
+
+##########################################################################################	
+##########################################################################################	
+### Conditions	
+##########################################################################################	
+Conditions:
+  CreateProdResources: !Equals [ !Ref "EnvironmentNameShorthand", "prod" ] 
+Resources:
+#############################################################################
+### APIs
+#############################################################################
+  # ApiGatewayV1:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: v1
+  #     Cors: "'*'"
+  #     DefinitionBody:
+  #       'Fn::Transform':
+  #         Name: 'AWS::Include'
+  #         Parameters:
+  #           Location: !Sub 's3://plt-${EnvironmentNameShorthand}.deployment-assets.${AWS::Region}/OMS-Order-Processor/api/v1/swagger.yml'
+  #     EndpointConfiguration: REGIONAL
+  #     Tags:
+  #       Application: !Ref 'ApplicationFullName'
+  #       Environment: !Ref 'CATagEnvironment'
+  #       Project: !Ref 'CATagProject'
+
+  # ApiGatewayV1BasePathMapping:
+  #   # DependsOn: ApiGatewayV1
+  #   Type: 'AWS::ApiGateway::BasePathMapping'
+  #   Properties:
+  #     BasePath: mena-v1
+  #     DomainName: !ImportValue Components-API-DomainName-prettylittlethingdotio-id
+  #     RestApiId: !Ref ApiGatewayV1
+  #     Stage: !Ref ApiGatewayV1.Stage
+
+  # ApiGatewayUsagePlan:
+  #   Type: 'AWS::ApiGateway::UsagePlan'
+  #   Properties:
+  #     ApiStages:
+  #       - ApiId: !Ref ApiGatewayV1
+  #         Stage: !Ref ApiGatewayV1.Stage
+  #     UsagePlanName: /mena/_general/
+
+#############################################################################
+  ApiGatewayNotifications:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: v1
+      Cors: "'*'"
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: !Sub 's3://plt-${EnvironmentNameShorthand}.deployment-assets.${AWS::Region}/OMS-Order-Processor/api/notifications/swagger.yml'
+      EndpointConfiguration: REGIONAL
+      Tags:
+        Application: !Ref 'ApplicationFullName'
+        Environment: !Ref 'CATagEnvironment'
+        Project: !Ref 'CATagProject'
+
+  ## Use during first deploy to a new region 
+  ## CloudFormation will not automatically deploy updates to this stage.
+  ApiGatewayNotificationsStageDeployment:
+    DependsOn: OMSOrderProcessorWorldpayNotificationsSave # This can be any one Method on the API
+    Type: 'AWS::ApiGateway::Deployment'
+    Properties:
+      Description: v1 Environment
+      RestApiId:
+        Ref: ApiGatewayNotifications
+      StageName: v1
+     
+  ApiGatewayNotificationsBasePathMapping:
+    # DependsOn: ApiGatewayV1
+    Type: 'AWS::ApiGateway::BasePathMapping'
+    Properties:
+      BasePath: v1
+      DomainName: !ImportValue Components-API-DomainName-prettylittlethingdotio-id
+      RestApiId: !Ref ApiGatewayNotifications
+      Stage: !Ref ApiGatewayV1.Stage
+      
+  ApiGatewayNotificationsUsagePlan:
+    Type: 'AWS::ApiGateway::UsagePlan'
+    Properties:
+      ApiStages:
+        - ApiId: !Ref ApiGatewayNotifications
+          Stage: !Ref ApiGatewayV1.Stage
+      UsagePlanName: /notifications/public
+
+##########################################################################################
+### Lambda Functions
+##########################################################################################
+           
+  OMSOrderProcessorWorldpayNotificationsSave:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: WorldpayNotificationsSave/index.handler
+      Runtime: !Ref NodeVersion
+      CodeUri: ./src/lambda/dist/
+      Description: 'OMS WorldpayNotificationsSave'
+      MemorySize: 256
+      Timeout: 300
+      Role: !GetAtt IAMRoleOMSOrderProcessorWorldpayNotificationsSave.Arn
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayNotifications
+            Path: /notifications/worldpay
+            Method: POST
+      Tracing: 'Active'
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref SecurityGroup
+        SubnetIds:
+          - !ImportValue "Serverless-VpcPrivateSubnet1"
+          - !ImportValue "Serverless-VpcPrivateSubnet2"
+          - !ImportValue "Serverless-VpcPrivateSubnet3"
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+        Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/AWS.CodeDeployForLambda'
+      Tags:
+        Application: "OMS"
+        Environment: !Ref 'CATagEnvironment'
+        Project: !Ref 'CATagProject'
+        DataClassification: "Severe"
+        Role: "Compute"
+        CloudFormation-StackName: !Join
+                                   - ''
+                                   - - !Ref 'AWS::StackName'
+        CloudFormation-StackId: !Join
+                                 - ''
+                                 - - !Ref 'AWS::StackId'
+
+  ##########################################################################################
+  ### Security Groups and IAM roles
+  ##########################################################################################
+
+  SecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "OMS-OrdersQueueProcessor"
+      VpcId: !ImportValue "Serverless-VpcId"
+      # GroupDescription: "OrdersQueueProcessor"
+      Tags:
+        - Key: Name
+          Value: 'OrdersQueueProcessor'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !ImportValue "Serverless-VpcCIDR"
+          Description: VPC HTTP Access
+      SecurityGroupEgress:
+        - IpProtocol: '-1'
+          CidrIp: 0.0.0.0/0
+
+  IAMRoleHoldingComms:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      - PolicyName: "SQS"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+            - sqs:SendMessage
+            Resource:
+            - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:PLT-ScheduledEmail-Emarsys'
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+
+  IAMRoleOrderStreamProcessor:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "S3Access"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - s3:PutObject
+              Resource:
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.datalake.raw.${AWS::Region}/*'
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.datalake.raw.${AWS::Region}'
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - dynamodb:GetRecords
+                - dynamodb:GetShardIterator
+                - dynamodb:DescribeStream
+                - dynamodb:ListStreams
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/stream/*'
+
+  IAMRoleOrdersQueueProcessor:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+        -
+          PolicyName: "SQS"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                - sqs:DeleteMessage
+                - sqs:GetQueueUrl
+                - sqs:ListDeadLetterSourceQueues
+                - sqs:DeleteMessageBatch
+                - sqs:SendMessageBatch
+                - sqs:ReceiveMessage
+                - sqs:SendMessage
+                - sqs:GetQueueAttributes
+                - sqs:ListQueueTags
+                Resource:
+                - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:CCS-OrderCreate-OMS'
+        -
+          PolicyName: "Lambda"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                - lambda:InvokeAsync
+                - lambda:InvokeFunction
+                Resource:
+                - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-TriggerConfirmationEmail'
+        -
+          PolicyName: "DynamoDB"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            -
+              Effect: "Allow"
+              Action:
+              - dynamodb:PutItem
+              - dynamodb:Query
+              - dynamodb:UpdateItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:GetItem
+              Resource:
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/CustomerQuotes'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/CustomerQuotes/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Refunds'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Refunds/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrderStatus'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersRefused'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersRefused/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs/index/*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Reports'
+        -
+          PolicyName: "ExecuteStateMachine"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                - states:StartExecution
+                Resource:
+                - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:OMS-Order-Processor-ApplyRoyalty'
+                - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:OMS-Order-Processor-Notify-DMS'
+                - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:OMS-Order-Processor'
+        -
+          PolicyName: "SNS"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            -
+              Effect: "Allow"
+              Action:
+              - sns:Publish
+              Resource:
+              - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:WMS-Stock'
+              - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-OrderCreate-WMS'
+        -
+          PolicyName: "SSM-ParameterStore"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            -
+              Effect: "Allow"
+              Action:
+              - ssm:GetParameter
+              Resource:
+              - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms.worldpay-refund-credentials'
+              - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/integrations/ccs-api-key'
+
+  IAMRoleTriggerConfirmationEmail:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      - PolicyName: "SQS"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+            - sqs:SendMessage
+            Resource:
+            - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:PLT-PriorityEmail-Emarsys'
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:GetItem
+            - dynamodb:Query
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms.confirmation-email-peak-comms-active'
+
+  IAMRoleAPITriggerConfirmationEmail:
+      Type: "AWS::IAM::Role"
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+              - "lambda.amazonaws.com"
+            Action:
+            - "sts:AssumeRole"
+        ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        Policies:
+          -
+            PolicyName: "Lambda"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+              -
+                Effect: "Allow"
+                Action:
+                - lambda:InvokeAsync
+                - lambda:InvokeFunction
+                Resource:
+                - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-TriggerConfirmationEmail'
+                - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-Downstream'
+          -
+            PolicyName: "DynamoDB"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+              -
+                Effect: "Allow"
+                Action:
+                - dynamodb:GetItem
+                - dynamodb:Query
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:PutItem
+                Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Refunds'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Reports'
+          -
+            PolicyName: "SNS"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - sns:Publish
+                  Resource:
+                    - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-OrderUpdates'
+                    - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-OrderCreate-WMS'
+          - PolicyName: "SQS"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+              - Effect: "Allow"
+                Action:
+                - sqs:SendMessage
+                Resource:
+                - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:PLT-ScheduledEmail-Emarsys'                    
+  IAMRoleAPIProcessHeldOrder:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:PutItem
+            - dynamodb:BatchWriteItem
+            - dynamodb:UpdateItem
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders/index/*'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs/index/*'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Refunds'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Refunds/index/*'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+      -
+        PolicyName: "DynamoDBOrdersPending"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:GetItem
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending/index/*'
+      -
+        PolicyName: "ExecuteStateMachine"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - states:StartExecution
+            Resource:
+            - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:OMS-Order-Processor'
+      -
+        PolicyName: "SNS"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - sns:Publish
+            Resource:
+            - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:WMS-Stock'
+  IAMRoleOrdersHeldGet:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:Scan
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersPending/index/*'
+  IAMRoleApplyRoyalty:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "SNS"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - sns:Publish
+            Resource:
+            - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-Royalty'
+
+  IAMRoleNotifyDMS:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/DMS-API-key'
+
+  IamRoleStateMachineExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - !Sub states.${AWS::Region}.amazonaws.com
+          Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+      - PolicyName: StatesExecutionPolicy
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: Allow
+            Action:
+            - "lambda:InvokeFunction"
+            Resource: "*"
+
+  IAMRoleAPIOrderPut:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "SQS"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - sqs:SendMessage
+            Resource:
+            - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:CCS-OrderCreate-OMS'
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:Query
+            - dynamodb:UpdateItem
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrderNumberPool'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrderNumberPool/index/*'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/pim-es.plt-api-key'
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/DMS-API-key'
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/product_api_key'
+
+  IAMRoleAPIReorderPut:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:BatchWriteItem
+            Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders/index/*'
+      -
+        PolicyName: "Lambda"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - lambda:InvokeAsync
+            - lambda:InvokeFunction
+            Resource:
+            - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-APIOrderPut'
+
+  IAMRoleStorageGatewayFlushCache:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Effect: "Allow"
+          Principal:
+            Service:
+            - "lambda.amazonaws.com"
+          Action:
+          - "sts:AssumeRole"
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+      - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "StorageGateway"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - storagegateway:RefreshCache
+            Resource:
+            - 'arn:aws:storagegateway:eu-west-1:339088465693:share/*'
+
+  IAMRoleRunDownstream:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+        -
+          PolicyName: "SQS"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                Resource:
+                  - !Sub 'arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:PLT-AWS-IRE-STAGING-ORDER-CREATE-WMS'
+
+        -
+          PolicyName: "SNS"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - sns:Publish
+                Resource:
+                  - !ImportValue 'snsARNOMSOrderCreate'
+                  - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:WMS-Stock'
+                  - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-OrderCreate-Exclude-WMS'
+                  - !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:OMS-OrderCreate-WMS'
+
+        -
+          PolicyName: "DynamoDB"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - dynamodb:DescribeStream
+                  - dynamodb:GetRecords
+                  - dynamodb:GetShardIterator
+                Resource: "arn:aws:dynamodb:eu-west-1:000670297293:table/Orders/stream/2018-04-16T15:24:35.522"
+
+              -
+                Effect: "Allow"
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:UpdateItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:GetItem
+                Resource:
+                  - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders'
+                  - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Orders/index/*'
+                  - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+                  - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+
+  IAMRoleCashOnDeliveryNotifier:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "S3Access"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - s3:GetObject
+              Resource:
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1/*'
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1'
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:Query
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersLogs/index/*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Reports'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Reports/index/*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - ssm:GetParameter
+              Resource:
+                - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/integrations/ccs-api-key'
+
+  IAMRoleCashOnDeliveryFilePuller:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "S3Access"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - s3:PutObject
+              Resource:
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1/*'
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/asendia/ftp_password'
+
+  IAMRoleCashOnDeliveryFilePullerAPG:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "S3Access"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - s3:PutObject
+              Resource:
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1/*'
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.cash-on-delivery.eu-west-1'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/apg/ftp_password'
+
+  IAMRoleOMSOrderProcessorDatalakeExport:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "S3Access"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - s3:GetObject
+              Resource:
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.datalake.raw.eu-west-1/*'
+                - !Sub 'arn:aws:s3:::plt-${EnvironmentNameShorthand}.datalake.raw.eu-west-1'
+      -
+        PolicyName: "SSM-ParameterStore"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          -
+            Effect: "Allow"
+            Action:
+            - ssm:GetParameter
+            Resource:
+            - !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/oms/datalake/gcp_private_key'
+
+  IAMRoleOMSOrderProcessorWorldpayNotificationsSave:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref CATagEnvironment
+        - Key: Project
+          Value: !Ref CATagProject
+        - Key: CloudFormation
+          Value: "true"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies:
+      -
+        PolicyName: "DynamoDB"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: "Allow"
+              Action:
+                - dynamodb:PutItem
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/OrdersV3/index/*'
+
+  # ##########################################################################################
+  # ### APIGateway-Notifications-Endpoint-Policy
+  # ##########################################################################################
+  # OMSIamRoleApiGatewayNotificationsEndpoints:
+  #   Type: "AWS::IAM::Role"
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         -
+  #           Effect: "Allow"
+  #           Principal:
+  #             Service:
+  #               - "apigateway.amazonaws.com"
+  #           Action:
+  #             - "sts:AssumeRole"
+  #     ManagedPolicyArns:
+  #       - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
+  #       - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
+  #       - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+  #     Policies:
+  #       - PolicyName: InvokeLambdafunction
+  #         PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             - Effect: Allow
+  #               Action:
+  #                 - "lambda:InvokeFunction"
+  #               Resource: 
+  #               - !Sub "*"
+         
+  ##########################################################################################
+  ### STATE MACHINE
+  ##########################################################################################
+
+  OMSOrderProcessorStateMachine:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      StateMachineName: OMS-Order-Processor-ApplyRoyalty
+      DefinitionString: !Sub |
+        {
+          "StartAt": "ApplyRoyalty",
+          "States": {
+            "ApplyRoyalty": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-ApplyRoyalty",
+              "End": true,
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "IntervalSeconds": 360,
+                  "BackoffRate": 2.0,
+                  "MaxAttempts": 10
+                }
+              ]
+            }
+          }
+        }
+      RoleArn: !GetAtt [ IamRoleStateMachineExecutionRole, Arn ]
+
+  OMSOrderProcessorNotifyDmsStateMachine:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      StateMachineName: OMS-Order-Processor-Notify-DMS
+      DefinitionString: !Sub |
+        {
+          "StartAt": "NotifyDMS",
+          "States": {
+            "NotifyDMS": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-NotifyDMSDiscountUsed",
+              "End": true,
+              "Retry": [
+                {
+                  "ErrorEquals": ["DMSError"],
+                  "IntervalSeconds": 360,
+                  "BackoffRate": 2.0,
+                  "MaxAttempts": 10
+                }
+              ],
+              "Catch": [
+                {
+                  "ErrorEquals": [ "States.ALL" ],
+                  "Next": "DMSFailed"
+                }
+             ]
+            },
+            "DMSFailed": {
+              "Type": "Fail"
+            }
+          }
+        }
+      RoleArn: !GetAtt [ IamRoleStateMachineExecutionRole, Arn ]
+
+  OMSOrderProcessorStateMachineV1:
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      StateMachineName: OMS-Order-Processor
+      DefinitionString: !Sub |
+        {
+          "StartAt": "RunDownstream",
+          "States": {
+            "RunDownstream": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:OMS-OrderProcessing-Downstream",
+              "End": true,
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "IntervalSeconds": 360,
+                  "BackoffRate": 2.0,
+                  "MaxAttempts": 10
+                }
+              ]
+            }
+          }
+        }
+      RoleArn: !GetAtt [ IamRoleStateMachineExecutionRole, Arn ]

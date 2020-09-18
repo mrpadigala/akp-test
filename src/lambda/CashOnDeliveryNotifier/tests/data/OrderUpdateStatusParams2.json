@@ -1,0 +1,12 @@
+{
+  "ConditionExpression": "attribute_exists(OrderId)",
+  "ExpressionAttributeValues": {
+    ":paid": true
+  },
+  "Key": {
+    "AttributeId": "Details",
+    "OrderId": "2343-2233-23434-234"
+  },
+  "TableName": "OrdersV3",
+  "UpdateExpression": "SET PaymentDetails.Paid = :paid"
+}
